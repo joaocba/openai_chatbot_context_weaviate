@@ -1,0 +1,413 @@
+{
+	"classes": [{
+		"class": "Publication",
+		"description": "A publication with an online source",
+		"invertedIndexConfig": {
+			"bm25": {
+				"b": 0.75,
+				"k1": 1.2
+			},
+			"cleanupIntervalSeconds": 60,
+			"stopwords": {
+				"additions": null,
+				"preset": "en",
+				"removals": null
+			}
+		},
+		"moduleConfig": {
+			"text2vec-transformers": {
+				"poolingStrategy": "masked_mean",
+				"vectorizeClassName": false
+			}
+		},
+		"properties": [{
+			"dataType": ["string"],
+			"description": "Name of the publication",
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "name",
+			"tokenization": "word"
+		}, {
+			"dataType": ["geoCoordinates"],
+			"description": "Geo location of the HQ",
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "headquartersGeoLocation"
+		}, {
+			"dataType": ["Article"],
+			"description": "The articles this publication has",
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "hasArticles"
+		}],
+		"replicationConfig": {
+			"factor": 1
+		},
+		"shardingConfig": {
+			"virtualPerPhysical": 128,
+			"desiredCount": 1,
+			"actualCount": 1,
+			"desiredVirtualCount": 128,
+			"actualVirtualCount": 128,
+			"key": "_id",
+			"strategy": "hash",
+			"function": "murmur3"
+		},
+		"vectorIndexConfig": {
+			"skip": false,
+			"cleanupIntervalSeconds": 300,
+			"maxConnections": 64,
+			"efConstruction": 128,
+			"ef": -1,
+			"dynamicEfMin": 100,
+			"dynamicEfMax": 500,
+			"dynamicEfFactor": 8,
+			"vectorCacheMaxObjects": 1000000000000,
+			"flatSearchCutoff": 40000,
+			"distance": "cosine",
+			"pq": {
+				"enabled": false,
+				"bitCompression": false,
+				"segments": 0,
+				"centroids": 256,
+				"encoder": {
+					"type": "kmeans",
+					"distribution": "log-normal"
+				}
+			}
+		},
+		"vectorIndexType": "hnsw",
+		"vectorizer": "text2vec-transformers"
+	}, {
+		"class": "Author",
+		"description": "Normalised types",
+		"invertedIndexConfig": {
+			"bm25": {
+				"b": 0.75,
+				"k1": 1.2
+			},
+			"cleanupIntervalSeconds": 60,
+			"stopwords": {
+				"additions": null,
+				"preset": "en",
+				"removals": null
+			}
+		},
+		"moduleConfig": {
+			"text2vec-transformers": {
+				"poolingStrategy": "masked_mean",
+				"vectorizeClassName": true
+			}
+		},
+		"properties": [{
+			"dataType": ["string"],
+			"description": "Name of the author",
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "name",
+			"tokenization": "word"
+		}, {
+			"dataType": ["Article"],
+			"description": "Articles this author wrote",
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "wroteArticles"
+		}, {
+			"dataType": ["Publication"],
+			"description": "The publication this author writes for",
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "writesFor"
+		}],
+		"replicationConfig": {
+			"factor": 1
+		},
+		"shardingConfig": {
+			"virtualPerPhysical": 128,
+			"desiredCount": 1,
+			"actualCount": 1,
+			"desiredVirtualCount": 128,
+			"actualVirtualCount": 128,
+			"key": "_id",
+			"strategy": "hash",
+			"function": "murmur3"
+		},
+		"vectorIndexConfig": {
+			"skip": false,
+			"cleanupIntervalSeconds": 300,
+			"maxConnections": 64,
+			"efConstruction": 128,
+			"ef": -1,
+			"dynamicEfMin": 100,
+			"dynamicEfMax": 500,
+			"dynamicEfFactor": 8,
+			"vectorCacheMaxObjects": 1000000000000,
+			"flatSearchCutoff": 40000,
+			"distance": "cosine",
+			"pq": {
+				"enabled": false,
+				"bitCompression": false,
+				"segments": 0,
+				"centroids": 256,
+				"encoder": {
+					"type": "kmeans",
+					"distribution": "log-normal"
+				}
+			}
+		},
+		"vectorIndexType": "hnsw",
+		"vectorizer": "text2vec-transformers"
+	}, {
+		"class": "Article",
+		"description": "Normalised types",
+		"invertedIndexConfig": {
+			"bm25": {
+				"b": 0.75,
+				"k1": 1.2
+			},
+			"cleanupIntervalSeconds": 60,
+			"stopwords": {
+				"additions": null,
+				"preset": "en",
+				"removals": null
+			}
+		},
+		"moduleConfig": {
+			"text2vec-transformers": {
+				"poolingStrategy": "masked_mean",
+				"vectorizeClassName": false
+			}
+		},
+		"properties": [{
+			"dataType": ["string"],
+			"description": "title of the article",
+			"indexInverted": true,
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "title",
+			"tokenization": "word"
+		}, {
+			"dataType": ["string"],
+			"description": "url of the article",
+			"indexInverted": false,
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "url",
+			"tokenization": "word"
+		}, {
+			"dataType": ["text"],
+			"description": "summary of the article",
+			"indexInverted": true,
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "summary",
+			"tokenization": "word"
+		}, {
+			"dataType": ["date"],
+			"description": "date of publication of the article",
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "publicationDate"
+		}, {
+			"dataType": ["int"],
+			"description": "Words in this article",
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "wordCount"
+		}, {
+			"dataType": ["boolean"],
+			"description": "whether the article is currently accessible through the url",
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "isAccessible"
+		}, {
+			"dataType": ["Author", "Publication"],
+			"description": "authors this article has",
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "hasAuthors"
+		}, {
+			"dataType": ["Publication"],
+			"description": "publication this article is in",
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "inPublication"
+		}, {
+			"dataType": ["Category"],
+			"description": "category this article is of",
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "ofCategory"
+		}],
+		"replicationConfig": {
+			"factor": 1
+		},
+		"shardingConfig": {
+			"virtualPerPhysical": 128,
+			"desiredCount": 1,
+			"actualCount": 1,
+			"desiredVirtualCount": 128,
+			"actualVirtualCount": 128,
+			"key": "_id",
+			"strategy": "hash",
+			"function": "murmur3"
+		},
+		"vectorIndexConfig": {
+			"skip": false,
+			"cleanupIntervalSeconds": 300,
+			"maxConnections": 64,
+			"efConstruction": 128,
+			"ef": -1,
+			"dynamicEfMin": 100,
+			"dynamicEfMax": 500,
+			"dynamicEfFactor": 8,
+			"vectorCacheMaxObjects": 1000000000000,
+			"flatSearchCutoff": 40000,
+			"distance": "cosine",
+			"pq": {
+				"enabled": false,
+				"bitCompression": false,
+				"segments": 0,
+				"centroids": 256,
+				"encoder": {
+					"type": "kmeans",
+					"distribution": "log-normal"
+				}
+			}
+		},
+		"vectorIndexType": "hnsw",
+		"vectorizer": "text2vec-transformers"
+	}, {
+		"class": "Category",
+		"description": "Category an article is a type off",
+		"invertedIndexConfig": {
+			"bm25": {
+				"b": 0.75,
+				"k1": 1.2
+			},
+			"cleanupIntervalSeconds": 60,
+			"stopwords": {
+				"additions": null,
+				"preset": "en",
+				"removals": null
+			}
+		},
+		"moduleConfig": {
+			"text2vec-transformers": {
+				"poolingStrategy": "masked_mean",
+				"vectorizeClassName": false
+			}
+		},
+		"properties": [{
+			"dataType": ["string"],
+			"description": "category name",
+			"indexInverted": true,
+			"moduleConfig": {
+				"text2vec-transformers": {
+					"skip": false,
+					"vectorizePropertyName": false
+				}
+			},
+			"name": "name",
+			"tokenization": "word"
+		}],
+		"replicationConfig": {
+			"factor": 1
+		},
+		"shardingConfig": {
+			"virtualPerPhysical": 128,
+			"desiredCount": 1,
+			"actualCount": 1,
+			"desiredVirtualCount": 128,
+			"actualVirtualCount": 128,
+			"key": "_id",
+			"strategy": "hash",
+			"function": "murmur3"
+		},
+		"vectorIndexConfig": {
+			"skip": false,
+			"cleanupIntervalSeconds": 300,
+			"maxConnections": 64,
+			"efConstruction": 128,
+			"ef": -1,
+			"dynamicEfMin": 100,
+			"dynamicEfMax": 500,
+			"dynamicEfFactor": 8,
+			"vectorCacheMaxObjects": 1000000000000,
+			"flatSearchCutoff": 40000,
+			"distance": "cosine",
+			"pq": {
+				"enabled": false,
+				"bitCompression": false,
+				"segments": 0,
+				"centroids": 256,
+				"encoder": {
+					"type": "kmeans",
+					"distribution": "log-normal"
+				}
+			}
+		},
+		"vectorIndexType": "hnsw",
+		"vectorizer": "text2vec-transformers"
+	}]
+}
